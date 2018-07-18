@@ -147,7 +147,11 @@ End Function"
                 End If
 
                 Dim baseType As TypeSyntax = DirectCast(node.BaseList?.Types.Single().Accept(Me), TypeSyntax)
-                Return SyntaxFactory.EnumBlock(SyntaxFactory.EnumStatement(SyntaxFactory.List(node.AttributeLists.[Select](Function(a As CSS.AttributeListSyntax) DirectCast(a.Accept(Me), AttributeListSyntax))), ConvertModifiers(node.Modifiers, IsModule), GenerateSafeVBToken(node.Identifier, False), If(baseType Is Nothing, Nothing, SyntaxFactory.SimpleAsClause(baseType))), SyntaxFactory.List(members)).WithConvertedTriviaFrom(node)
+                Return SyntaxFactory.EnumBlock(enumStatement:=SyntaxFactory.EnumStatement(attributeLists:=SyntaxFactory.List(node.AttributeLists.[Select](Function(a As CSS.AttributeListSyntax) DirectCast(a.Accept(Me), AttributeListSyntax))),
+                                                                                          modifiers:=ConvertModifiers(modifiers:=node.Modifiers, IsModule:=IsModule), identifier:=GenerateSafeVBToken(id:=node.Identifier, IsQualifiedName:=False), underlyingType:=If(baseType Is Nothing, Nothing, SyntaxFactory.SimpleAsClause(baseType))),
+                                               members:=SyntaxFactory.List(members),
+                                               endEnumStatement:=SyntaxFactory.EndEnumStatement().WithConvertedTriviaFrom(node.CloseBraceToken)
+                                               ).WithConvertedTriviaFrom(node)
             End Function
 
             Public Overrides Function VisitEnumMemberDeclaration(ByVal node As CSS.EnumMemberDeclarationSyntax) As VisualBasicSyntaxNode
