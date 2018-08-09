@@ -2,7 +2,6 @@
 Option Infer Off
 Option Strict On
 
-
 Imports System.Runtime.InteropServices
 Imports CSharpToVBApp
 

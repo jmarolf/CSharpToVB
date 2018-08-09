@@ -4,7 +4,6 @@ Option Strict On
 
 Imports IVisualBasicCode.CodeConverter.VB
 Imports Microsoft.CodeAnalysis
-Imports Microsoft.CodeAnalysis.Emit
 
 Namespace IVisualBasicCode.CodeConverter
     Public Module CodeConverter
@@ -40,13 +39,13 @@ Namespace IVisualBasicCode.CodeConverter
             End If
             Throw New ArgumentException($"{language} not supported!")
         End Function
-        Public Function Convert(ByVal code As CodeWithOptions) As ConversionResult
+        Public Function Convert(ByVal code As CodeWithOptions, OptionalReferences() As MetadataReference) As ConversionResult
 
             Select Case code.FromLanguage
                 Case LanguageNames.CSharp
                     Select Case code.ToLanguage
                         Case LanguageNames.VisualBasic
-                            Return CSharpConverter.ConvertText(code.Text, References)
+                            Return CSharpConverter.ConvertText(code.Text, OptionalReferences)
                     End Select
                 Case LanguageNames.VisualBasic
                     Select Case code.ToLanguage
@@ -69,7 +68,7 @@ Namespace IVisualBasicCode.CodeConverter
             End If
             Return New ConversionResult(New NotSupportedException($"Converting from {code.FromLanguage} {code.FromLanguageVersion} to {code.ToLanguage} {code.ToLanguageVersion} is not supported!"))
         End Function
-        Public Function ConvertInputRequest(RequestToConvert As ConvertRequest) As ConversionResult
+        Public Function ConvertInputRequest(RequestToConvert As ConvertRequest, OptionalReferences() As MetadataReference) As ConversionResult
             Dim languages As String() = RequestToConvert.RequestedConversion.Split("2"c)
             Dim fromLanguage As String = LanguageNames.CSharp
             Dim toLanguage As String = LanguageNames.VisualBasic
@@ -82,7 +81,7 @@ Namespace IVisualBasicCode.CodeConverter
                 toVersion = GetDefaultVersionForLanguage(languages(1))
             End If
             Dim codeWithOptions As CodeWithOptions = (New CodeWithOptions(RequestToConvert.SourceCode)).SetFromLanguage(fromLanguage, fromVersion).SetToLanguage(toLanguage, toVersion)
-            Dim ResultOfConversion As ConversionResult = CodeConverter.Convert(codeWithOptions)
+            Dim ResultOfConversion As ConversionResult = CodeConverter.Convert(codeWithOptions, OptionalReferences)
             Return ResultOfConversion
         End Function
     End Module

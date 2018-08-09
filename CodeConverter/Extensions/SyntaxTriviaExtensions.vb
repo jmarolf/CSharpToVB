@@ -168,6 +168,28 @@ Namespace IVisualBasicCode.CodeConverter.Util
         End Function
 
         <Extension>
+        Public Function GetLeadingDirective(node As SyntaxToken) As SyntaxTrivia
+            If node.HasLeadingTrivia Then
+                For Each t As SyntaxTrivia In node.LeadingTrivia
+                    If t.IsDirective Then
+                        Return t
+                    End If
+                Next
+            End If
+            Return New SyntaxTrivia
+        End Function
+
+        <Extension>
+        Public Function GetTrailingDirective(node As SyntaxToken) As SyntaxTrivia
+            For Each t As SyntaxTrivia In node.TrailingTrivia
+                If t.IsDirective Then
+                    Return t
+                End If
+            Next
+            Return New SyntaxTrivia
+        End Function
+
+        <Extension>
         Public Function ContainsEOLTrivia(Token As SyntaxToken) As Boolean
             If Not Token.HasTrailingTrivia Then
                 Return False

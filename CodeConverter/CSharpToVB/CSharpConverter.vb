@@ -103,6 +103,19 @@ Namespace IVisualBasicCode.CodeConverter.VB
 
             For Each token As SyntaxToken In modifiers.Where(Function(m As SyntaxToken) Not IgnoreInContext(m, context))
                 Dim m As SyntaxToken? = ConvertModifier(token, IsModule, context)
+                Dim LeadingDirective As SyntaxTrivia = token.GetLeadingDirective
+                If LeadingDirective.IsDirective AndAlso m IsNot Nothing Then
+                    If m.HasValue Then
+                        Try
+                            m = CType(m, SyntaxToken).WithLeadingTrivia(ConvertTrivia({LeadingDirective}))
+                        Catch ex As Exception
+                            Stop
+                        End Try
+                    Else
+                        Stop
+                    End If
+                End If
+
                 If m.HasValue Then
                     Yield m.Value
                 End If

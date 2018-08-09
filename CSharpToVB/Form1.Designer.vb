@@ -28,7 +28,9 @@ Partial Class Form1
         Me.VB2CSharp = New System.Windows.Forms.RadioButton()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFileToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenProjectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.RecentFilesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RecentFile1ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -89,12 +91,12 @@ Partial Class Form1
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RichTextBoxConversionInput = New System.Windows.Forms.RichTextBox()
-        Me.LineNumbers_For_RichTextBoxInput = New CSharpToVBApp.LineNumbers_For_RichTextBox()
-        Me.RichTextBoxConversionOutput = New CSharpToVBApp.AdvancedRTB()
-        Me.LineNumbers_For_RichTextBoxOutput = New CSharpToVBApp.LineNumbers_For_RichTextBox()
         Me.RichTextBoxFileList = New System.Windows.Forms.RichTextBox()
         Me.RichTextBoxErrorList = New System.Windows.Forms.RichTextBox()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.LineNumbers_For_RichTextBoxInput = New CSharpToVBApp.LineNumbers_For_RichTextBox()
+        Me.RichTextBoxConversionOutput = New CSharpToVBApp.AdvancedRTB()
+        Me.LineNumbers_For_RichTextBoxOutput = New CSharpToVBApp.LineNumbers_For_RichTextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -139,29 +141,44 @@ Partial Class Form1
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenFileToolStripMenuItem, Me.ToolStripSeparator6, Me.RecentFilesToolStripMenuItem, Me.RecentFoldersToolStripMenuItem, Me.ToolStripSeparator7, Me.SaveAsToolStripMenuItem, Me.ToolStripSeparator2, Me.SnippetToolStripMenuItem, Me.ToolStripSeparator5, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripSeparator6, Me.RecentFilesToolStripMenuItem, Me.RecentFoldersToolStripMenuItem, Me.ToolStripSeparator7, Me.SaveAsToolStripMenuItem, Me.ToolStripSeparator2, Me.SnippetToolStripMenuItem, Me.ToolStripSeparator5, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.F), System.Windows.Forms.Keys)
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
         '
-        'OpenFileToolStripMenuItem
+        'ToolStripMenuItem1
         '
-        Me.OpenFileToolStripMenuItem.Name = "OpenFileToolStripMenuItem"
-        Me.OpenFileToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenFileToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
-        Me.OpenFileToolStripMenuItem.Text = "Open File..."
+        Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenFileToolStripMenuItem1, Me.OpenProjectToolStripMenuItem})
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(180, 22)
+        Me.ToolStripMenuItem1.Text = "Open"
+        '
+        'OpenFileToolStripMenuItem1
+        '
+        Me.OpenFileToolStripMenuItem1.Name = "OpenFileToolStripMenuItem1"
+        Me.OpenFileToolStripMenuItem1.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.OpenFileToolStripMenuItem1.Size = New System.Drawing.Size(227, 22)
+        Me.OpenFileToolStripMenuItem1.Text = "&Open File..."
+        '
+        'OpenProjectToolStripMenuItem
+        '
+        Me.OpenProjectToolStripMenuItem.Name = "OpenProjectToolStripMenuItem"
+        Me.OpenProjectToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
+            Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.OpenProjectToolStripMenuItem.Size = New System.Drawing.Size(227, 22)
+        Me.OpenProjectToolStripMenuItem.Text = "Open Project..."
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(173, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(177, 6)
         '
         'RecentFilesToolStripMenuItem
         '
         Me.RecentFilesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RecentFile1ToolStripMenuItem})
         Me.RecentFilesToolStripMenuItem.Name = "RecentFilesToolStripMenuItem"
-        Me.RecentFilesToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.RecentFilesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.RecentFilesToolStripMenuItem.Text = "Recent Files"
         '
         'RecentFile1ToolStripMenuItem
@@ -175,38 +192,38 @@ Partial Class Form1
         '
         Me.RecentFoldersToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RecentFolder1ToolStripMenuItem})
         Me.RecentFoldersToolStripMenuItem.Name = "RecentFoldersToolStripMenuItem"
-        Me.RecentFoldersToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.RecentFoldersToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.RecentFoldersToolStripMenuItem.Text = "Recent Folders"
         '
         'RecentFolder1ToolStripMenuItem
         '
         Me.RecentFolder1ToolStripMenuItem.Name = "RecentFolder1ToolStripMenuItem"
-        Me.RecentFolder1ToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.RecentFolder1ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.RecentFolder1ToolStripMenuItem.Text = "RecentFolder1"
         '
         'ToolStripSeparator7
         '
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(173, 6)
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(177, 6)
         '
         'SaveAsToolStripMenuItem
         '
         Me.SaveAsToolStripMenuItem.Enabled = False
         Me.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem"
         Me.SaveAsToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
-        Me.SaveAsToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.SaveAsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.SaveAsToolStripMenuItem.Text = "Save &As..."
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(173, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(177, 6)
         '
         'SnippetToolStripMenuItem
         '
         Me.SnippetToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SnippetLoadLastToolStripMenuItem, Me.SnippetSaveToolStripMenuItem})
         Me.SnippetToolStripMenuItem.Name = "SnippetToolStripMenuItem"
-        Me.SnippetToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.SnippetToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.SnippetToolStripMenuItem.Text = "Snippet"
         '
         'SnippetLoadLastToolStripMenuItem
@@ -226,13 +243,13 @@ Partial Class Form1
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(173, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(177, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.ExitToolStripMenuItem.Text = "E&xit"
         '
         'EditToolStripMenuItem
@@ -595,6 +612,35 @@ Partial Class Form1
         Me.RichTextBoxConversionInput.Text = ""
         Me.RichTextBoxConversionInput.WordWrap = False
         '
+        'RichTextBoxFileList
+        '
+        Me.RichTextBoxFileList.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.RichTextBoxFileList.HideSelection = False
+        Me.RichTextBoxFileList.Location = New System.Drawing.Point(0, 0)
+        Me.RichTextBoxFileList.Name = "RichTextBoxFileList"
+        Me.RichTextBoxFileList.Size = New System.Drawing.Size(1068, 96)
+        Me.RichTextBoxFileList.TabIndex = 0
+        Me.RichTextBoxFileList.Text = ""
+        Me.RichTextBoxFileList.WordWrap = False
+        '
+        'RichTextBoxErrorList
+        '
+        Me.RichTextBoxErrorList.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.RichTextBoxErrorList.Location = New System.Drawing.Point(1091, 0)
+        Me.RichTextBoxErrorList.Name = "RichTextBoxErrorList"
+        Me.RichTextBoxErrorList.Size = New System.Drawing.Size(793, 96)
+        Me.RichTextBoxErrorList.TabIndex = 1
+        Me.RichTextBoxErrorList.Text = ""
+        Me.RichTextBoxErrorList.WordWrap = False
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(411, 1)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(171, 23)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.ProgressBar1.TabIndex = 2
+        '
         'LineNumbers_For_RichTextBoxInput
         '
         Me.LineNumbers_For_RichTextBoxInput._SeeThroughMode_ = False
@@ -686,35 +732,6 @@ Partial Class Form1
         Me.LineNumbers_For_RichTextBoxOutput.TabIndex = 22
         Me.LineNumbers_For_RichTextBoxOutput.Visible = False
         '
-        'RichTextBoxFileList
-        '
-        Me.RichTextBoxFileList.ContextMenuStrip = Me.ContextMenuStrip1
-        Me.RichTextBoxFileList.HideSelection = False
-        Me.RichTextBoxFileList.Location = New System.Drawing.Point(0, 0)
-        Me.RichTextBoxFileList.Name = "RichTextBoxFileList"
-        Me.RichTextBoxFileList.Size = New System.Drawing.Size(1068, 96)
-        Me.RichTextBoxFileList.TabIndex = 0
-        Me.RichTextBoxFileList.Text = ""
-        Me.RichTextBoxFileList.WordWrap = False
-        '
-        'RichTextBoxErrorList
-        '
-        Me.RichTextBoxErrorList.ContextMenuStrip = Me.ContextMenuStrip1
-        Me.RichTextBoxErrorList.Location = New System.Drawing.Point(1091, 0)
-        Me.RichTextBoxErrorList.Name = "RichTextBoxErrorList"
-        Me.RichTextBoxErrorList.Size = New System.Drawing.Size(793, 96)
-        Me.RichTextBoxErrorList.TabIndex = 1
-        Me.RichTextBoxErrorList.Text = ""
-        Me.RichTextBoxErrorList.WordWrap = False
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(411, 1)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(171, 23)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.ProgressBar1.TabIndex = 2
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -766,7 +783,6 @@ Partial Class Form1
     Friend WithEvents ConvertSnipitToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents OpenFileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents ColorizeSourceToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FIndToolStripMenuItem As ToolStripMenuItem
@@ -819,4 +835,7 @@ Partial Class Form1
     Friend WithEvents SkipAutoGeneratedToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ColorizeResultToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SkipTestResourceFilesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents OpenFileToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents OpenProjectToolStripMenuItem As ToolStripMenuItem
 End Class

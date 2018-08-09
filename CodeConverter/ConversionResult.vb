@@ -16,6 +16,7 @@ Namespace IVisualBasicCode.CodeConverter
             Success = True
             TargetLanguage = OutputLanguage
         End Sub
+
         <ExcludeFromCodeCoverage>
         Public Sub New(ParamArray ByVal exceptions() As Exception)
             Success = False

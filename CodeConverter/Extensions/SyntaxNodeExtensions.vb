@@ -93,7 +93,7 @@ Namespace IVisualBasicCode.CodeConverter.Util
 
             If t.IsKind(CS.SyntaxKind.IfDirectiveTrivia) Then
                 Dim HashIF As CS.Syntax.IfDirectiveTriviaSyntax = DirectCast(t.GetStructure, CS.Syntax.IfDirectiveTriviaSyntax)
-                If t.Token.Parent.AncestorsAndSelf.OfType(Of CS.Syntax.InitializerExpressionSyntax).Any Then
+                If t.Token.Parent?.AncestorsAndSelf.OfType(Of CS.Syntax.InitializerExpressionSyntax).Any Then
                     IgnoredIfDepth += 1
                 End If
                 Dim Expression1 As String = HashIF.Condition.ToString.

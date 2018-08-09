@@ -413,8 +413,11 @@ Namespace IVisualBasicCode.CodeConverter.VB
                 For Each s As CSS.StatementSyntax In section.Statements
                     If s Is lastStatement AndAlso TypeOf s Is CSS.BreakStatementSyntax Then Continue For
                     Statements.AddRange(ConvertBlock(s, OpenBraceTrailingTrivia, ClosingBraceLeadingTrivia))
-                    If OpenBraceTrailingTrivia.Count > 0 OrElse ClosingBraceLeadingTrivia.Count > 0 Then
+                    If OpenBraceTrailingTrivia.Count > 0 Then
                         Stop
+                    End If
+                    If ClosingBraceLeadingTrivia.Count > 0 Then
+                        Statements(Statements.Count - 1) = Statements.Last.WithAppendedTrailingTrivia(ClosingBraceLeadingTrivia)
                     End If
                 Next
                 Return SyntaxFactory.List(Statements)

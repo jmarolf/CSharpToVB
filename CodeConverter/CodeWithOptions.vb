@@ -2,11 +2,6 @@
 Option Infer Off
 Option Strict On
 
-Imports System
-Imports System.Collections.Generic
-Imports System.IO
-Imports System.Linq
-Imports IVisualBasicCode.CodeConverter.Util
 Imports Microsoft.CodeAnalysis
 
 Namespace IVisualBasicCode.CodeConverter

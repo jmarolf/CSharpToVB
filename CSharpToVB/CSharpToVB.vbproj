@@ -173,6 +173,9 @@
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic">
       <Version>2.8.2</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Workspace">
+      <Version>15.0.401</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

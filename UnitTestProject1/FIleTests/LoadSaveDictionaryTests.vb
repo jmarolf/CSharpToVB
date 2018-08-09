@@ -1,5 +1,5 @@
 ﻿Imports CSharpToVBApp
-
+Imports Microsoft.CodeAnalysis
 Imports Xunit
 
 Namespace CodeConverter.Tests.VB
@@ -8,7 +8,7 @@ Namespace CodeConverter.Tests.VB
         Dim LastFileProcessed As String
         Dim ListOfFiles As New List(Of String)
         Dim MaxPathLength As Integer = 0
-        Private Function GetMaxPathLength(PathWithFileName As String, LanguageExtension As String) As Boolean
+        Private Function GetMaxPathLength(PathWithFileName As String, LanguageExtension As String, DontCare() As MetadataReference) As Boolean
             ' Do not delete the next line of the parameter
             LanguageExtension = ""
             LastFileProcessed = PathWithFileName

@@ -3,8 +3,10 @@ Option Infer Off
 Option Strict On
 
 Imports System
+Imports System.IO
 Imports System.Linq
 Imports Microsoft.CodeAnalysis
+Imports Microsoft.VisualBasic.FileIO
 
 Namespace CodeConverter.Tests
     Public Module DiagnosticTestBase
@@ -13,7 +15,7 @@ Namespace CodeConverter.Tests
         Private ReadOnly SystemAssembly As MetadataReference = MetadataReference.CreateFromFile(GetType(ComponentModel.BrowsableAttribute).Assembly.Location)
         Private ReadOnly SystemCore As MetadataReference = MetadataReference.CreateFromFile(GetType(Enumerable).Assembly.Location)
         Private ReadOnly SystemCoreReference As MetadataReference = MetadataReference.CreateFromFile(GetType(Enumerable).Assembly.Location)
-        Private ReadOnly SystemLinq As MetadataReference = MetadataReference.CreateFromFile("C:\Users\PaulM\Documents\Visual Studio 2017\Projects\CSharpToVB\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll")
+        Private ReadOnly SystemLinq As MetadataReference = MetadataReference.CreateFromFile(Path.Combine(SpecialDirectories.MyDocuments, "Visual Studio 2017\Projects\CSharpToVB\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll"))
         Private ReadOnly SystemXmlLinq As MetadataReference = MetadataReference.CreateFromFile(GetType(XElement).Assembly.Location)
         Private ReadOnly VBConstants As MetadataReference = MetadataReference.CreateFromFile(GetType(Microsoft.VisualBasic.Constants).Assembly.Location)
 
@@ -21,7 +23,7 @@ Namespace CodeConverter.Tests
         Private ReadOnly EnumerableReference As PortableExecutableReference = MetadataReference.CreateFromFile(GetType(Enumerable).GetAssemblyLocation())
         Private ReadOnly VBPortable As PortableExecutableReference = MetadataReference.CreateFromFile("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\Microsoft.VisualBasic.dll")
         Private ReadOnly VBRuntime As PortableExecutableReference = MetadataReference.CreateFromFile(GetType(CompilerServices.StandardModuleAttribute).Assembly.Location)
-        Private ReadOnly XunitReferences As MetadataReference = MetadataReference.CreateFromFile("C:\Users\PaulM\Documents\Visual Studio 2017\Projects\CSharpToVB\packages\xunit.extensibility.core.2.3.1\lib\netstandard1.1\xunit.core.dll")
+        Private ReadOnly XunitReferences As MetadataReference = MetadataReference.CreateFromFile(Path.Combine(SpecialDirectories.MyDocuments, "Visual Studio 2017\Projects\CSharpToVB\packages\xunit.extensibility.core.2.4.0\lib\netstandard2.0\xunit.core.dll"))
 
         Friend Function DefaultMetadataReferences() As List(Of MetadataReference)
             Dim _References As New List(Of MetadataReference)({

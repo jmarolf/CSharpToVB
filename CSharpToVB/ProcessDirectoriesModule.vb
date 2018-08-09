@@ -2,6 +2,7 @@
 Option Infer Off
 Option Strict On
 Imports System.IO
+Imports Microsoft.CodeAnalysis
 
 Public Module ProcessDirectoriesModule
     Public Function GetFileTextFromStream(fileStream As Stream) As String
@@ -32,7 +33,7 @@ Public Module ProcessDirectoriesModule
     ''' <returns>
     ''' False if error and user wants to stop, True if success or user wants to ignore error
     ''' </returns>
-    Public Function ProcessDirectory(targetDirectory As String, MeForm As Form1, StopButton As Button, RichTextBoxFileList As RichTextBox, ByRef LastFileNameWithPath As String, ByRef LanguageExtension As String, ByRef FilesProcessed As Integer, ProcessFile As Func(Of String, String, Boolean)) As Boolean
+    Public Function ProcessDirectory(targetDirectory As String, MeForm As Form1, StopButton As Button, RichTextBoxFileList As RichTextBox, ByRef LastFileNameWithPath As String, ByRef LanguageExtension As String, ByRef FilesProcessed As Integer, ProcessFile As Func(Of String, String, MetadataReference(), Boolean)) As Boolean
         ' Process the list of files found in the directory.
         Dim DirectoryList As String() = Directory.GetFiles(targetDirectory, $"*.{LanguageExtension}")
         For Each PathWithFileName As String In DirectoryList
@@ -45,7 +46,7 @@ Public Module ProcessDirectoriesModule
                     RichTextBoxFileList.ScrollToCaret()
                     Application.DoEvents()
                 End If
-                If Not ProcessFile(PathWithFileName, LanguageExtension) Then
+                If Not ProcessFile(PathWithFileName, LanguageExtension, References) Then
                     SetButtonStopAndCursor(MeForm, StopButton, False)
                     Return False
                 End If
@@ -65,11 +66,11 @@ Public Module ProcessDirectoriesModule
         Return True
     End Function
 
-    Public Sub SetButtonStopAndCursor(MeForm As Form1, StopButton As Button, Value As Boolean)
+    Public Sub SetButtonStopAndCursor(MeForm As Form1, StopButton As Button, VisibleValue As Boolean)
         If StopButton IsNot Nothing Then
-            StopButton.Visible = Value
+            StopButton.Visible = VisibleValue
             MeForm.StopRequested = False
         End If
-        LocalUseWaitCutsor(MeForm, Value)
+        LocalUseWaitCutsor(MeForm, VisibleValue)
     End Sub
 End Module
