@@ -35,7 +35,7 @@ Public Module ProcessDirectoriesModule
     ''' </returns>
     Public Function ProcessDirectory(targetDirectory As String, MeForm As Form1, StopButton As Button, RichTextBoxFileList As RichTextBox, ByRef LastFileNameWithPath As String, ByRef LanguageExtension As String, ByRef FilesProcessed As Integer, ProcessFile As Func(Of String, String, MetadataReference(), Boolean)) As Boolean
         ' Process the list of files found in the directory.
-        Dim DirectoryList As String() = Directory.GetFiles(targetDirectory, $"*.{LanguageExtension}")
+        Dim DirectoryList As String() = Directory.GetFiles(path:=targetDirectory, searchPattern:=$"*.{LanguageExtension}")
         For Each PathWithFileName As String In DirectoryList
             FilesProcessed += 1
             If LastFileNameWithPath.Length = 0 OrElse LastFileNameWithPath = PathWithFileName Then
@@ -47,19 +47,19 @@ Public Module ProcessDirectoriesModule
                     Application.DoEvents()
                 End If
                 If Not ProcessFile(PathWithFileName, LanguageExtension, References) Then
-                    SetButtonStopAndCursor(MeForm, StopButton, False)
+                    SetButtonStopAndCursor(MeForm:=MeForm, StopButton:=StopButton, VisibleValue:=False)
                     Return False
                 End If
             End If
         Next PathWithFileName
-        Dim subdirectoryEntries As String() = Directory.GetDirectories(targetDirectory)
+        Dim subdirectoryEntries As String() = Directory.GetDirectories(path:=targetDirectory)
         ' Recurse into subdirectories of this directory.
         For Each subdirectory As String In subdirectoryEntries
             If (subdirectory.EndsWith("Test\Resources") OrElse subdirectory.EndsWith("Setup\Templates")) AndAlso (MeForm Is Nothing OrElse MeForm.SkipTestResourceFilesToolStripMenuItem.Checked) Then
                 Continue For
             End If
-            If Not ProcessDirectory(subdirectory, MeForm, StopButton, RichTextBoxFileList, LastFileNameWithPath, LanguageExtension, FilesProcessed, ProcessFile) Then
-                SetButtonStopAndCursor(MeForm, StopButton, False)
+            If Not ProcessDirectory(targetDirectory:=subdirectory, MeForm:=MeForm, StopButton:=StopButton, RichTextBoxFileList:=RichTextBoxFileList, LastFileNameWithPath:=LastFileNameWithPath, LanguageExtension:=LanguageExtension, FilesProcessed:=FilesProcessed, ProcessFile:=ProcessFile) Then
+                SetButtonStopAndCursor(MeForm:=MeForm, StopButton:=StopButton, VisibleValue:=False)
                 Return False
             End If
         Next subdirectory
@@ -71,6 +71,6 @@ Public Module ProcessDirectoriesModule
             StopButton.Visible = VisibleValue
             MeForm.StopRequested = False
         End If
-        LocalUseWaitCutsor(MeForm, VisibleValue)
+        LocalUseWaitCutsor(MeForm:=MeForm, Enable:=VisibleValue)
     End Sub
 End Module

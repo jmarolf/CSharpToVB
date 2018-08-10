@@ -31,7 +31,7 @@ Namespace CodeConverter.Tests.VB
             Dim LanguageExtension As String = "cs"
             Dim FilesProcessed As Integer = 0
             Dim LastFileNameWithPath As String = ""
-            Dim Condition As Boolean = ProcessDirectory(targetDirectory, Nothing, Nothing, Nothing, LastFileNameWithPath, LanguageExtension, FilesProcessed, AddressOf GetMaxPathLength)
+            Dim Condition As Boolean = ProcessDirectory(targetDirectory:=targetDirectory, MeForm:=Nothing, StopButton:=Nothing, RichTextBoxFileList:=Nothing, LastFileNameWithPath:=LastFileNameWithPath, LanguageExtension:=LanguageExtension, FilesProcessed:=FilesProcessed, ProcessFile:=AddressOf GetMaxPathLength)
             Assert.True(MaxPathLength = 220, $"MaxPathLength = {MaxPathLength}")
         End Sub
 
