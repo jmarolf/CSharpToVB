@@ -2,15 +2,16 @@
 Option Infer Off
 Option Strict On
 
-Imports System.Collections.Immutable
-Imports System.ComponentModel
-Imports System.IO
 Imports CSharpToVBApp
 Imports IVisualBasicCode.CodeConverter
+Imports Microsoft.Build.Locator
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.Emit
 Imports Microsoft.CodeAnalysis.MSBuild
 Imports Microsoft.CodeAnalysis.VisualBasic
+Imports System.Collections.Immutable
+Imports System.ComponentModel
+Imports System.IO
 
 Public Class Form1
     Private Const SPI_SETSCREENSAVETIMEOUT As Integer = 15
@@ -476,7 +477,15 @@ Public Class Form1
             SetButtonStopAndCursor(MeForm:=Me, StopButton:=ButtonStop, VisibleValue:=True)
             Dim ProjectPath As String = OpenFileDialog1.FileName
             ConvertFolderToolStripMenuItem.Enabled = True
+            Dim visualStudioInstances() As VisualStudioInstance = MSBuildLocator.QueryVisualStudioInstances().ToArray()
+            Dim instance As VisualStudioInstance = If(visualStudioInstances.Length >= 1, visualStudioInstances(1), SelectVisualStudioInstance(visualStudioInstances))
+            Console.WriteLine($"Using MSBuild at '{instance.MSBuildPath}' to load projects.")
+            ' NOTE: Be sure to register an instance with the MSBuildLocator
+            '       before calling MSBuildWorkspace.Create()
+            '       otherwise, MSBuildWorkspace won't MEF compose.
+            MSBuildLocator.RegisterInstance(instance)
             Using Workspace As MSBuildWorkspace = MSBuildWorkspace.Create()
+                AddHandler Workspace.WorkspaceFailed, AddressOf MSBuildWorkspaceFailed
                 Dim currentProject As Project = Workspace.OpenProjectAsync(ProjectPath).Result
                 Workspace.LoadMetadataForReferencedProjects = True
                 If currentProject.HasDocuments Then
@@ -493,6 +502,10 @@ Public Class Form1
 
     End Sub
 
+    ' Print message for WorkspaceFailed event to help diagnosing project load failures.
+    Public Sub MSBuildWorkspaceFailed(o As Object, e1 As WorkspaceDiagnosticEventArgs)
+        Console.WriteLine(e1.Diagnostic.Message)
+    End Sub
     Private Sub OuputBufferLineNumbersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OuputBufferLineNumbersToolStripMenuItem.Click
         LineNumbers_For_RichTextBoxOutput.Visible = CType(sender, ToolStripMenuItem).Checked
     End Sub
@@ -669,6 +682,10 @@ Public Class Form1
         Application.DoEvents()
     End Sub
 
+    Private Sub RecentFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RecentFoldersToolStripMenuItem.Click
+
+    End Sub
+
     Private Sub ResizeRichTextBuffers()
         Dim LineNumberInputWidth As Integer = If(LineNumbers_For_RichTextBoxInput.Visible, LineNumbers_For_RichTextBoxInput.Width, 0)
         Dim LineNumberOutputWidth As Integer = If(LineNumbers_For_RichTextBoxOutput.Visible, LineNumbers_For_RichTextBoxOutput.Width, 0)
@@ -682,6 +699,7 @@ Public Class Form1
         RichTextBoxErrorList.Left = CInt(ClientSize.Width / 2)
         RichTextBoxErrorList.Width = CInt(ClientSize.Width / 2)
     End Sub
+
     Private Sub RichTexBoxErrorList_DoubleClick(sender As Object, e As EventArgs) Handles RichTextBoxErrorList.DoubleClick
         If RTFLineStart > 0 AndAlso RichTextBoxConversionOutput.SelectionStart <> RTFLineStart Then
             RichTextBoxConversionOutput.Select(RTFLineStart, 0)
@@ -741,6 +759,7 @@ Public Class Form1
         Dim OutputBufferInUse As Boolean = CType(sender, RichTextBox).TextLength > 0
         CompileToolStripMenuItem.Enabled = OutputBufferInUse
     End Sub
+
     Private Sub RichTextBoxErrorList_Enter(sender As Object, e As EventArgs) Handles RichTextBoxErrorList.Enter
         CurrentBuffer = CType(sender, RichTextBox)
     End Sub
@@ -749,16 +768,15 @@ Public Class Form1
         CurrentBuffer = CType(sender, RichTextBox)
     End Sub
 
+    Private Sub RichTextBoxFileList_Enter(sender As Object, e As EventArgs) Handles RichTextBoxFileList.Enter
+        CurrentBuffer = CType(sender, RichTextBox)
+    End Sub
+
     'Private Sub RichTextBoxErrorList_TextChanged(sender As Object, e As EventArgs) Handles RichTextBoxErrorList.TextChanged
     '    Dim HasErrors As Boolean = RichTextBoxErrorList.TextLength > 0
     '    LineNumbers_For_RichTextBoxInput.Visible = HasErrors
     '    LineNumbers_For_RichTextBoxOutput.Visible = HasErrors AndAlso RichTextBoxConversionOutput.TextLength > 0
     'End Sub
-
-    Private Sub RichTextBoxFileList_Enter(sender As Object, e As EventArgs) Handles RichTextBoxFileList.Enter
-        CurrentBuffer = CType(sender, RichTextBox)
-    End Sub
-
     Private Sub RichTextBoxFileList_MouseEnter(sender As Object, e As EventArgs) Handles RichTextBoxFileList.MouseEnter
         CurrentBuffer = CType(sender, RichTextBox)
     End Sub
@@ -868,7 +886,24 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub RecentFoldersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RecentFoldersToolStripMenuItem.Click
+    Public Shared Function SelectVisualStudioInstance(visualStudioInstances As VisualStudioInstance()) As VisualStudioInstance
+        Console.WriteLine("Multiple installs of MSBuild detected please select one:")
+        For Index As Integer = 0 To visualStudioInstances.Length - 1
+            Console.WriteLine($"Instance {Index + 1}")
+            Console.WriteLine($"    Name: {visualStudioInstances(Index).Name}")
+            Console.WriteLine($"    Version: {visualStudioInstances(Index).Version}")
+            Console.WriteLine($"    MSBuild Path: {visualStudioInstances(Index).MSBuildPath}")
+        Next
 
-    End Sub
+        While True
+            Dim userResponse As String = Console.ReadLine()
+            Dim instanceNumber As Integer = 0
+            If Integer.TryParse(userResponse, instanceNumber) AndAlso instanceNumber > 0 AndAlso instanceNumber <= visualStudioInstances.Length Then
+                Return visualStudioInstances(instanceNumber - 1)
+            End If
+            Console.WriteLine("Input not accepted, try again.")
+        End While
+
+        Return Nothing
+    End Function
 End Class

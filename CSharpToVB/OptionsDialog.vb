@@ -8,9 +8,9 @@ Imports System.Windows.Forms
 Public Class OptionsDialog
     Private SelectedColor As Color
     Private SelectedColorName As String = "default"
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = DialogResult.Cancel
-        Me.Close()
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
+        DialogResult = DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub ItemColor_ComboBox_DrawItem(sender As Object, e As DrawItemEventArgs) Handles ItemColor_ComboBox.DrawItem
@@ -31,13 +31,13 @@ Public Class OptionsDialog
         SelectedColor = ColorSelector.GetColorFromName(SelectedColorName)
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         My.Settings.DefaultProjectDirectory = CType(ProjectDirectoryList.SelectedItem, MyListItem).Value
         My.Settings.Save()
-        Me.DialogResult = DialogResult.OK
+        DialogResult = DialogResult.OK
         ColorSelector.WriteColorDictionaryToFile()
         Application.DoEvents()
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub OptionsDialog_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -50,7 +50,7 @@ Public Class OptionsDialog
             End If
         Next
         For Each Name As String In ColorSelector.GetColorNameList()
-            Me.ItemColor_ComboBox.Items.Add(Name)
+            ItemColor_ComboBox.Items.Add(Name)
         Next Name
         ItemColor_ComboBox.SelectedIndex = ItemColor_ComboBox.FindStringExact("default")
     End Sub
